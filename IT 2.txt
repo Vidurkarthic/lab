@@ -1,0 +1,1061 @@
+IT 2
+
+// You are using Java
+1)
+
+Write a Java program to get below input from user and insert in in table and search the record based on department.
+
+import java.util.*;
+import java.sql.*;
+class Main
+{
+    public static void main(String args[]) throws Exception
+    {
+        Scanner sc=new Scanner(System.in);
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection con=DriverManager.getConnection("jdbc:mysql://localhost/ri_db","test","test123");
+        String q="insert into BILL values(?,?,?,?,?)";
+        PreparedStatement st=con.prepareStatement(q);
+        int n=sc.nextInt();
+        sc.nextLine();
+        for(int i=0;i<n;i++)
+        {
+            int a=Integer.parseInt(sc.nextLine());
+            String b=sc.nextLine();
+            String c=sc.nextLine();
+            String d=sc.nextLine();
+            double e=Double.parseDouble(sc.nextLine());
+            st.setInt(1,a);
+            st.setString(2,b);
+            st.setString(3,c);
+            st.setString(4,d);
+            st.setDouble(5,e);
+            st.executeUpdate();
+        }
+        String g=sc.nextLine();
+        String qu="SELECT * FROM BILL Where DNAME ='"+g+"'";
+        ResultSet rs=st.executeQuery(qu);
+        int ct=0;
+        while(rs.next()){
+        ct++;
+        System.out.println(rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getString(4)+" "+rs.getDouble(5));
+        }
+        if(ct==0)
+        System.out.print("No students in "+g+" department");
+        con.close();
+       
+       
+    }
+   
+}
+
+_____________________________________________________________________________________________
+
+2)
+
+Write a Java (JDBC) program to connect with the MySQL database, insert the given data in the table, and display the employee details with the salary range from 10000 to 50000.
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Scanner;
+
+ class Main
+ {
+public static void main(String args[]) throws Exception
+{
+String url="jdbc:mysql://localhost/ri_db";
+String username ="test";
+String password ="test123";
+String query = "INSERT INTO OFFICE (EID,ENAME, ESALARY) VALUES (?,?,?);";
+
+Scanner sc =new Scanner(System.in);
+
+Class.forName("com.mysql.jdbc.Driver");
+Connection con = DriverManager.getConnection(url,username,password);
+PreparedStatement st = con.prepareStatement(query);
+
+int n =Integer.parseInt(sc.nextLine());
+
+for(int i=0;i<n;i++) {
+int eid=Integer.parseInt(sc.nextLine());
+String ename =sc.nextLine();
+int esalary = Integer.parseInt(sc.nextLine());
+st.setInt(1,eid);
+st.setString(2,ename);
+st.setInt(3,esalary);
+st.executeUpdate();
+}
+
+ResultSet rs =  st.executeQuery("select * from OFFICE where esalary between 10000 and 50000");
+while(rs.next()) {
+System.out.println(rs.getInt(1)+" "+rs.getString(2)+" "+rs.getInt(3));
+}
+st.close();
+con.close();
+}
+}
+
+___________________________________________________________________________________________________________________
+
+3)
+
+Write a program to find the area of the wall. Create a class Wall with the following private attributes
+length - double
+height - double
+
+import java.util.*;
+class Wall
+{
+    double length;
+    double height;
+    Wall(double l, double h)
+    {
+        length=l;
+        height=h;
+    }
+    void calculateArea()
+    {
+        System.out.print(length*height);
+    }
+}
+class Main
+{
+    public static void main(String[] args)
+    {
+        Scanner ob=new Scanner(System.in);
+        double l1=ob.nextDouble();
+        double h1=ob.nextDouble();
+        System.out.print("Area of Wall 1: ");
+        Wall obj1=new Wall(l1,h1);
+        obj1.calculateArea();
+        double l2=ob.nextDouble();
+        double h2=ob.nextDouble();
+        System.out.println();
+        System.out.print("Area of Wall 2: ");
+        Wall obj2=new Wall(l2,h2);
+        obj2.calculateArea();
+    }
+}
+
+________________________________________________________________________________________
+
+4)
+
+Write a program to get the employee id, name, and salary of N professors and print the details of the professors whose salary is greater or equal to 20000.
+Create a class Professor with the following public attributes,
+id - int
+name - string
+salary - int
+
+import java.util.*;
+class Professor
+{
+    int id;
+    String name;
+    int salary;
+    Professor()
+    {
+       
+    }
+    Professor(int id,String name,int salary)
+    {
+        this.id=id;
+        this.name=name;
+        this.salary=salary;
+    }
+   
+}
+class Main
+{
+    public static void main(String[] args)
+    {
+        Scanner in=new Scanner(System.in);
+        int n=in.nextInt();
+        Professor[] p=new Professor[n];
+        for(int i=0;i<n;i++)
+        {
+            int id=in.nextInt();
+            String name=in.next();
+            int salary=in.nextInt();
+            p[i]=new Professor(id,name,salary);
+        }
+        for(int i=0;i<n;i++)
+        {
+            if(p[i].salary>20000)
+            {
+                System.out.println(p[i].id+" "+p[i].name+" "+p[i].salary);
+            }
+        }
+    }
+}
+
+__________________________________________________________________________________________________
+
+5)
+
+Function Overloading
+An ice-cream vendor sells his ice-creams in cone(radius r and height h) and ball(radius r) shaped containers. However, he is unsure of the quantity that can be filled in the two containers. You are required to write a program in java that prints the volume of the containers given its respective dimensions as input. Your class must be named ‘Icecream’ which has two methods with same name ‘Quantity’ each having the respective dimensions of the containers as the parameters.
+
+import java.util.Scanner;
+import java.math.*;
+import java.text.DecimalFormat;
+class Icecream
+{
+    public double qty, qty_rd, pi=3.14;
+    DecimalFormat d=new DecimalFormat("0.00");
+    public void Quantity(int r)
+    {
+        qty=1.33*pi*r*r*r;
+        qty_rd=Math.round(qty*100.0)/100.0;
+        System.out.println(d.format(qty_rd));
+    }
+    public void Quantity(int r, int h)
+    {
+        qty=0.33*pi*r*r*h;
+        qty_rd=Math.round(qty*100.0)/100.0;
+        System.out.println(d.format(qty_rd));
+    }
+}
+class main
+{
+    public static void main(String[] args)
+    {
+        int r,h;
+        Icecream ic=new Icecream();
+        Scanner ob=new Scanner(System.in);
+        r=ob.nextInt();
+        if(ob.hasNextInt())
+        {
+            h=ob.nextInt();
+            ic.Quantity(r,h);
+        }
+        else
+        {
+            ic.Quantity(r);
+        }
+    }
+}
+
+____________________________________________________________________________________________
+
+6)
+
+Write a java program to create an application that calculates the salary of employees based on their job title. The program should have a superclass called Employee with a method calculateSalary() that returns the basic salary. There should be two subclasses called Manager and Engineer which override the calculateSalary() method to add a bonus or overtime pay to the basic salary.
+
+import java.util.Scanner;
+class Employee
+{
+    public double tot;
+    public void calculateSalary()
+    {
+       
+    }
+    public double calculateSalary(double a, double b)
+    {
+        tot=a+b;
+        return tot;
+    }
+}
+class Manager extends Employee
+{
+    public double calculateSalary(double c, double d)
+    {
+        return c+d;
+    }
+}
+class Engineer extends Employee
+{
+    public double calculateSalary(double e, double f)
+    {
+        return e+f;
+    }
+}
+class Main
+{
+    public static void main(String[] args)
+    {
+        Scanner ob=new Scanner(System.in);
+        String ManagerName=ob.nextLine();
+        double bs=ob.nextDouble();
+        double ex=ob.nextDouble();
+        Manager m=new Manager();
+        System.out.println("Manager Salary: "+m.calculateSalary(bs,ex));
+        ob.nextLine();
+        String EngineerName=ob.nextLine();
+        double bs2=ob.nextDouble();
+        double ex2=ob.nextDouble();
+        Engineer eg=new Engineer();
+        System.out.println("Engineer Salary: "+eg.calculateSalary(bs2,ex2));
+    }
+}
+
+___________________________________________________________________________________________
+
+7)
+
+Write a program to move all the special characters to the end of the string.
+Create a class named Demo with the following method.
+static String move(String str)
+Create a Main class that extends Demo and call the method within it.
+
+import java.util.*;
+class Demo
+{
+    public static void move(String str)
+    {
+        String x="";
+        for(int i=0;i<str.length();i++)
+        {
+            if(!Character.isLetter(str.charAt(i)) && !Character.isDigit(str.charAt(i)))
+            {
+                x+=str.charAt(i);
+            }
+            else
+            {
+                System.out.print(str.charAt(i));
+            }
+        }
+        System.out.println(x);
+    }
+}
+class main
+{
+    public static void main(String[] args)
+    {
+        Scanner ob=new Scanner(System.in);
+        String s=ob.nextLine();
+        Demo d=new Demo();
+        d.move(s);
+    }
+}
+
+______________________________________________________________________________________________________
+
+8)
+
+You are in an Online shopping portal.It has two types of members, Basic and Premium. Their relationship is shown in the inheritance diagram.  
+
+import java.util.Scanner;
+
+class Basic{
+    String name,city;
+    int age;
+    String gender;
+    int bill;
+    void setter(String name, String city, int age, String gender, int bill){
+        this.name = name;
+        this.city = city;
+        this.age = age;
+        this.gender = gender;
+        this.bill = bill;
+    }
+    void display(){
+        System.out.println(name);
+        System.out.println(city);
+        System.out.println(age);
+        System.out.println(gender);
+        System.out.println(bill);
+    }
+    int calc(){
+        if(bill >=1 && bill < 5000){
+            return 100;
+        }
+        else if(bill >= 5000 && bill < 7500 ){
+            return 250;
+        }
+        else if(bill >= 7500 && bill < 10000){
+            return 500;
+        }
+        else if(bill >= 10000 && bill < 20000){
+            return 750;
+        }
+        else if(bill >=20000 && bill < 30000){
+            return 1000;
+        }
+        else{
+            return 1500;
+        }
+    }
+}
+
+class Premium extends Basic{
+    int bill;
+    void set(int k){
+        this.bill = k;
+    }
+    @Override int calc(){
+        if(bill >=1 && bill < 5000){
+            return 200;
+        }
+        else if(bill >= 5000 && bill < 7500 ){
+            return 400;
+        }
+        else if(bill >= 7500 && bill < 10000){
+            return 700;
+        }
+        else if(bill >= 10000 && bill < 20000){
+            return 1000;
+        }
+        else if(bill >=20000 && bill < 30000){
+            return 1500;
+        }
+        else{
+            return 2000;
+        }
+    }
+}
+
+class Main{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        String name = sc.nextLine();
+        String city = sc.nextLine();
+        int age = sc.nextInt();
+        sc.nextLine();
+        String gender = sc.nextLine();
+        int bill = sc.nextInt();
+        int m = sc.nextInt();
+        if(m == 0){
+            Basic b = new Basic();
+            b.setter(name, city, age, gender, bill);
+            b.display();
+            System.out.print(b.calc());
+        }
+        else{
+            int k = sc.nextInt();
+            Premium p = new Premium();
+            p.setter(name, city, age, gender, bill);
+            p.display();
+            System.out.println(k);
+            p.set(bill);
+            System.out.print(p.calc());
+        }
+    }
+}
+
+________________________________________________________________________________________________
+
+9)
+
+Write a program in Java that finds the addition, subtraction, multiplication, and division of two complex numbers using inheritance.
+
+import java.util.*;
+import java.text.*;
+abstract class Complex{
+    abstract void func(int a,int b,int c,int d);
+    DecimalFormat df = new DecimalFormat("0.0000");
+}
+class Addition extends Complex{
+    void func(int a,int b,int c,int d){
+        System.out.println("Addition:");
+        System.out.print("\t");
+        System.out.print(df.format(a+c) + " +");
+        System.out.print(df.format(b+d) + " i\n");
+    }
+}
+class Subtraction extends Complex{
+    void func(int a,int b,int c,int d){
+        System.out.println("Subtraction:");
+        System.out.print("\t");
+        System.out.print(df.format(a-c));
+        if(b-d < 0)
+            System.out.print(" ");
+        else
+            System.out.print(" +");
+        System.out.print(df.format(b-d) + " i\n");
+    }
+}
+class Multiplication extends Complex{
+    void func(int a,int b,int c,int d){
+        System.out.println("Multiplication:");
+        System.out.print("\t");
+        System.out.print(df.format(a*c - b*d));
+        if(a*d + b*c < 0)
+            System.out.print(" -");
+        else
+            System.out.print(" +");
+        System.out.print(df.format(a*d + b*c) + " i\n");
+    }
+}
+class Division extends Complex{
+    void func(int a,int b,int c,int d){
+        System.out.println("Division:");
+        System.out.print("\t");
+        if(c*c + d*d == 0){
+            System.out.print("NaN NaN i");
+            return;
+        }
+        System.out.print(df.format((a*c + b*d + 0.0) / (c*c + d*d)));
+        if(b*c - a*d < 0)
+            System.out.print(" ");
+        else
+            System.out.print(" +");
+        System.out.print(df.format((b*c - a*d + 0.0) / (c*c + d*d)) + " i\n");
+    }
+}
+class Main{
+    public static void main(String[] args){
+        Scanner s = new Scanner(System.in);
+        int a = s.nextInt();
+        int b = s.nextInt();
+        int c = s.nextInt();
+        int d = s.nextInt();
+        Addition A = new Addition();
+        Subtraction S = new Subtraction();
+        Multiplication M = new Multiplication();
+        Division D = new Division();
+        A.func(a,b,c,d);
+        S.func(a,b,c,d);
+        M.func(a,b,c,d);
+        D.func(a,b,c,d);
+    }
+}
+
+_______________________________________________________________________________________________
+
+10)
+
+Write a program, such that you should get N number of elements from the user and compute sum of elements in the odd and even position. Print the elements which has the highest sum.
+
+import java.util.*;
+interface Total
+{
+    void calc(int[] arr);
+}
+class coin implements Total
+{
+    Scanner in=new Scanner(System.in);
+    public void input()
+    {
+        int n=in.nextInt();
+        int[] arr=new int[n];
+        for(int i=0;i<n;i++)
+        {
+            arr[i]=in.nextInt();
+        }
+        if(n%2!=0)
+        {
+            System.out.println("Enter valid number");
+        }
+        else
+        {
+            calc(arr);
+        }
+    }
+    @Override public void calc(int[] arr)
+    {
+        int len=arr.length;
+        int oddsum=0;
+        int evensum=0;
+        for(int i=0;i<len;i++)
+        {
+            if(i%2==0)
+            {
+                oddsum+=arr[i];
+            }
+            else
+            {
+                evensum+=arr[i];
+            }
+        }
+        if(oddsum>evensum)
+        {
+            for(int i=0;i<len;i+=2)
+            {
+                System.out.print(arr[i]+" ");
+            }
+        }
+        else
+        {
+            for(int i=1;i<len;i+=2)
+            {
+                System.out.print(arr[i]+" ");
+            }
+        }
+    }
+}
+class main
+{
+    public static void main(String[] args)
+    {
+        coin obj=new coin();
+        obj.input();
+    }
+}
+
+_________________________________________________________________________________________
+
+11)
+
+Write a Java program to create a class named "Birds" that contains a constructor that prints "Birds : ". Create a class named Parrot, it extends the class Birds. It contains a constructor that prints "Grey Parrot."
+
+import java.util.*;
+class Birds
+{
+    Birds()
+    {
+        System.out.print("Birds: ");
+    }
+}
+class Parrot extends Birds
+{
+    Parrot()
+    {
+        System.out.println("Grey Parrot");
+    }
+}
+class Cocktail extends Parrot
+{
+    Cocktail()
+    {
+        System.out.println("Grey Cocoktail");
+    }
+}
+class Kiwi extends Cocktail
+{
+    Kiwi()
+    {
+        System.out.println("Grey Kiwi");
+    }
+}
+class main
+{
+    public static void main(String[] args)
+    {
+        Scanner ob=new Scanner(System.in);
+        String s=ob.nextLine();
+        if(s.equals("Parrot"))
+        {
+            Parrot p=new Parrot();
+        }
+        else if(s.equals("Cocktail"))
+        {
+            Cocktail c=new Cocktail();
+        }
+        else if(s.equals("Kiwi"))
+        {
+            Kiwi k=new Kiwi();
+        }
+    }
+}
+
+_________________________________________________________________________________________________
+
+12)
+
+Write a program that can accept five integer elements, remove the final element from the queue, and display the remaining elements using an iterator for traversal.
+
+import java.util.*;
+class Main
+{
+    public static void main(String[] args)
+    {
+        Scanner sc=new Scanner(System.in);
+        ArrayDeque<Integer> a=new ArrayDeque<Integer>();
+        a.add(sc.nextInt());
+        a.add(sc.nextInt());
+        a.add(sc.nextInt());
+        a.add(sc.nextInt());
+        a.add(sc.nextInt());
+        a.removeLast();
+        Iterator<Integer> i=a.iterator();
+        while(i.hasNext())
+        {
+            System.out.println(i.next());
+        }
+    }
+}
+
+__________________________________________________________________________________________________________________________
+
+13)
+
+Write a java program to convert ArrayList To String Array using the toArray() method.
+
+import java.util.*;
+class Main
+{
+    public static void main(String[] args)
+    {
+        Scanner sc=new Scanner(System.in);
+        ArrayList<String> al=new ArrayList<String>();
+        int n=sc.nextInt();
+        String num;
+        for(int i=0;i<n;i++)
+        {
+            num=sc.next();
+            al.add(num);
+        }
+        String[] s=al.toArray(new String[n]);
+        for(String k:s)
+        {
+            System.out.println(k);
+        }
+    }
+}
+
+____________________________________________________________________________________________________________________
+
+14)
+
+Write a program to create main method in LinkedListMain class, get the names and store them in a LinkedList. Next delete the names at index X   and display the remaining data in the list.
+
+import java.util.*;
+class Main {
+    public static void main(String args[])
+    {
+        Scanner sc=new Scanner(System.in);
+        int n=Integer.parseInt(sc.nextLine());
+        LinkedList<String> l=new LinkedList<String>();
+        for(int i=0;i<n;i++)
+        l.add(sc.nextLine());
+        int rem=Integer.parseInt(sc.nextLine());
+        l.remove(rem-1);
+        Iterator<String> it=l.iterator();
+        while(it.hasNext())
+        System.out.println(it.next());
+    }
+}
+
+____________________________________________________________________________________________________________________
+
+15)
+
+Write a Java program that demonstrates method overloading for polymorphism to perform square, modulus, and division mathematical operations.
+
+import java.util.*;
+class Mathematics
+{
+    public void calculate(int x)
+    {
+        System.out.println("Square of "+x+": "+(x*x));
+    }
+    public void calculate(int x, int y)
+    {
+        System.out.println("Modulus of "+x+", "+y+": "+(x%y));
+    }
+    public void calculate(float m, float n)
+    {
+        System.out.println("Quotient of "+m+", "+n+": "+(m/n));
+    }
+}
+class main
+{
+    public static void main(String[] args)
+    {
+        Scanner ob=new Scanner(System.in);
+        int a=ob.nextInt();
+        int b=ob.nextInt();
+        float c=ob.nextFloat();
+        float d=ob.nextFloat();
+        Mathematics obj=new Mathematics();
+        obj.calculate(a);
+        obj.calculate(a,b);
+        obj.calculate(c,d);
+    }
+}
+
+_____________________________________________________________________________________________
+
+16)
+
+Create an abstract class 'Bank' and there are three banks Bank A, Bank B, and Bank C.
+
+import java.util.*;
+abstract class Bank
+{
+       public void getBalance()
+       {
+           
+       }
+}
+class BankA extends Bank
+{
+void getBalance(int n)
+    {
+        System.out.println("Deposited Balance is = "+n);
+    }
+}
+class BankB extends Bank
+{
+    void getBalance(int n)
+    {
+        System.out.println("Deposited Balance is = "+n);
+    }
+}
+class BankC extends Bank
+{
+    void getBalance(int n)
+    {
+        System.out.println("Deposited Balance is = "+n);
+    }
+   
+}
+class Main
+{
+  public static void main(String[] args)
+    {
+       int amt1,amt2,amt3;
+       Scanner s =  new Scanner(System.in);
+       amt1=s.nextInt();
+       amt2=s.nextInt();
+       amt3=s.nextInt();
+       BankA Balance1 = new BankA();
+       Balance1.getBalance(amt1);
+       BankB Balance2 = new BankB();
+       Balance2.getBalance(amt2);
+       BankC Balance3 = new BankC();
+       Balance3.getBalance(amt3);
+
+   }
+
+}
+
+________________________________________________________________________________________________________
+
+17)
+
+Write a program to validate the email address and display suitable exceptions if there is any mistake.
+
+import java.util.Scanner;
+import java.io.*;
+class DotException extends Exception
+{
+    public DotException(String str)
+    {
+        super(str);
+    }
+}
+class AtTheRateException extends Exception
+{
+    public AtTheRateException(String str)
+    {
+        super(str);
+    }
+}
+class DomainException extends Exception
+{
+    public DomainException(String str)
+    {
+        super(str);
+    }
+}
+class Main
+{
+    public static void main(String args[])
+    {
+        Scanner scan = new Scanner(System.in);
+        String str = scan.nextLine();
+       
+        try
+        {
+            int dot=0,atRate=0;
+            for(int i=0;i<str.length();i++)
+            {
+                if(str.charAt(i)=='.')
+                    dot++;
+                if(str.charAt(i)=='@')
+                    atRate++;
+            }
+           
+            if(dot!=1)
+            {
+                throw new DotException("Invalid Dot usage");
+            }
+            if(atRate!=1)
+            {
+                throw new AtTheRateException("Invalid @ usage");
+            }
+            if(!(str.contains("in") || str.contains("com") || str.contains("net") || str.contains("biz")))
+            {
+                throw new DomainException("Invalid Domain");
+            }
+            System.out.print("Valid email address");
+        }
+        catch(DotException e)
+        {
+            System.out.print(e);
+            System.out.print("\nInvalid email address");
+        }
+        catch(AtTheRateException e)
+        {
+            System.out.print(e);
+            System.out.print("\nInvalid email address");
+        }
+        catch(DomainException e)
+        {
+            System.out.print(e);
+            System.out.print("\nInvalid email address");
+        }
+    }
+}
+
+__________________________________________________________________________________________________________________
+
+18)
+
+ArrayIndexOutOfBoundsException:
+The prominent exception which you will see is ArrayIndexOutOfBoundsException. It occurs when the program tries to access the array beyond its size.
+
+import java.util.Scanner;
+class Main
+{
+    public static void main(String args[])
+    {
+        Scanner scan = new Scanner(System.in);
+        int n = scan.nextInt();
+        int arr[] = new int[n];
+        for(int i=0;i<n;i++)
+            arr[i] = scan.nextInt();
+           
+        int ind = scan.nextInt();
+        try
+        {
+            System.out.println(arr[ind]);
+        }
+        catch(Exception e)
+        {
+            System.out.println("Array index out of bound.");
+        }
+       
+       
+        int a = scan.nextInt();
+        int b = scan.nextInt();
+        try
+        {
+            System.out.println(a/b);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+       
+       
+        String str = null;
+        ind = scan.nextInt();
+        System.out.println(str);
+        try
+        {
+            System.out.println(str.charAt(ind));
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+}
+
+_______________________________________________________________________________________________________
+
+19)
+
+Write a program to check if age is eligible to vote, if age is less than 18 use Custom exception to print the message "Not Eligible to vote" and print the custom Exception name as AgeException, otherwise print "Eligible to vote".
+
+import java.util.*;
+import java.io.*;
+class main
+{
+    public static void main(String[] args)
+    {
+        Scanner ob=new Scanner(System.in);
+        int n=ob.nextInt();
+        try
+        {
+           if (n < 18) {
+                throw new Exception("Not Eligible to vote");
+            }
+            else {
+                System.out.println("Eligible To Vote");
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("AgeException");
+        }
+    }
+}
+
+________________________________________________________________________________________________________
+
+20)
+
+In a school, maths staff gives the concept of finding the area of different shapes to students. Create a class called Shape with a variable, area of type integer. Include a constructor with one argument which is a side of type integer.
+
+import java.util.*;
+class shape
+{
+    int a;
+    int b;
+    int c;
+    shape(int a)
+    {
+        System.out.println(a*a);
+    }
+    shape(int b,int c)
+    {
+        System.out.println(b*c);
+    }
+}
+class Main
+{
+    public static void main(String[] args)
+    {
+        Scanner in=new Scanner(System.in);
+        int a=in.nextInt();
+        int b=in.nextInt();
+        int c=in.nextInt();
+        shape s=new shape(a);
+        shape s1=new shape(b,c);
+    }
+}
+
+____________________________________________________________________________________________________
+
+21)
+
+Your English literature friend is very happy with the code you gave him. Now for his research, he used your application to find character frequency in many novels. For larger novels, the application takes a lot of time for computation. So he called you on a fine Sunday to discuss this with you. He wanted to know whether you can improve the speed of the application.
+
+import java.util.Scanner;
+
+class Mythread extends Thread{
+String str;
+static int n;
+public Mythread(String str) {
+super();
+this.str = str;
+}
+
+public void run() {
+n = this.str.length();
+int[] freq = new int[26];
+
+for (int i = 0; i < n; i++)
+            freq[this.str.charAt(i) - 'a']++;
+ 
+        for (int i = 0; i < n; i++) {
+            if (freq[this.str.charAt(i) - 'a'] != 0) {
+                System.out.print(this.str.charAt(i));
+                System.out.print(freq[this.str.charAt(i) - 'a']);  
+                System.out.println();
+              freq[this.str.charAt(i) - 'a'] = 0;
+            }
+}
+
+}
+}
+class MainThread{
+public static void main(String args[]) {
+Scanner sc =new Scanner(System.in);
+int n=Integer.parseInt(sc.nextLine());
+for(int i=0;i<n;i++) {
+String str= sc.nextLine();
+Mythread t2 =new Mythread(str);
+t2.start();
+System.out.println();
+}
+
+
+}
+}
